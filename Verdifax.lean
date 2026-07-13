@@ -8,9 +8,12 @@
 --                               spec conformance, order sensitivity,
 --                               injectivity, version binding, and the
 --                               hash-layer lifting (11 theorems).
---   Verdifax/Pipeline.lean    — (next) the L0-L8 pipeline as a pure
---                               function over admitted inputs.
+--   Verdifax/Pipeline.lean    — the pipeline as a pure function over
+--                               admitted inputs: AdmittedInput record,
+--                               policy gate, budget check, manifest
+--                               assembly feeding the canonical encoder.
 --   Verdifax/Determinism.lean — (next) the pipeline_determinism theorem.
 --   Verdifax/R1CS.lean        — (next) R1CS satisfiability lemmas.
 
 import Verdifax.Canonical
+import Verdifax.Pipeline
