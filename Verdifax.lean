@@ -8,7 +8,9 @@
 -- kernel hashes with SHA-256. The theorems below are machine-checked
 -- statements of the properties the runtime tests assert empirically:
 -- determinism, specification conformance, order sensitivity,
--- injectivity (unambiguity), and version binding.
+-- injectivity (unambiguity), and version binding, plus their lifting
+-- to an opaque hash layer under an explicit collision-freedom
+-- modelling assumption.
 
 namespace Verdifax
 
@@ -192,5 +194,52 @@ theorem encode_version_binding (v w : Bytes) (fs gs : List Bytes)
       (fun hn => nomatch hn) (fun hn => nomatch hn) h
   injection heq with h1 _
   exact hne h1
+
+/-! ### Lifting to the hash layer
+
+The runtime hashes `encode fields` with SHA-256. Here the hash is
+modelled as an OPAQUE function `H`: nothing below inspects or axiomatizes
+SHA-256 itself.
+
+SHA-256 is not injective (pigeonhole: inputs are unbounded, outputs are
+32 bytes), so injectivity at the hash layer cannot be a theorem about
+the real function. What practice assumes is collision resistance: no
+feasible computation exhibits `x ≠ y` with `H x = H y`. We transport
+that into the logic as the explicit hypothesis `CollisionFree H`, and
+every hash-layer theorem carries it as a visible argument. These
+theorems therefore say exactly: *modulo finding a SHA-256 collision*,
+the manifest-hash guarantees inherit everything proved above about the
+encoding. -/
+
+/-- Collision-freedom modelling assumption for an opaque hash. This is
+    the collision-resistance assumption stated logically; it is NOT a
+    provable property of SHA-256 and is never asserted, only assumed. -/
+def CollisionFree (H : Bytes → Bytes) : Prop :=
+  ∀ x y : Bytes, H x = H y → x = y
+
+/-- Hash-layer determinism: equal field lists give equal manifest
+    hashes. Needs no assumption on `H` at all; it is congruence over
+    `encode_deterministic` ("same input, same manifest hash"). -/
+theorem hash_deterministic (H : Bytes → Bytes) {a b : List Bytes}
+    (h : a = b) : H (encode a) = H (encode b) := by
+  rw [h]
+
+/-- Hash-layer injectivity: assuming no collision, equal manifest hashes
+    force equal field lists (null-free, nonempty, as before). This is
+    the soundness of the audit record: two different governed inputs
+    cannot share a manifest hash unless SHA-256 itself is broken. -/
+theorem hash_injective (H : Bytes → Bytes) (hH : CollisionFree H)
+    (a b : List Bytes) (ha : AllNullFree a) (hb : AllNullFree b)
+    (hane : a ≠ []) (hbne : b ≠ [])
+    (h : H (encode a) = H (encode b)) : a = b :=
+  encode_injective a b ha hb hane hbne (hH _ _ h)
+
+/-- Hash-layer version binding: assuming no collision, encodings under
+    different version tags have different manifest hashes. -/
+theorem hash_version_binding (H : Bytes → Bytes) (hH : CollisionFree H)
+    (v w : Bytes) (fs gs : List Bytes)
+    (hv : AllNullFree (v :: fs)) (hw : AllNullFree (w :: gs))
+    (hne : v ≠ w) : H (encode (v :: fs)) ≠ H (encode (w :: gs)) :=
+  fun h => encode_version_binding v w fs gs hv hw hne (hH _ _ h)
 
 end Verdifax
