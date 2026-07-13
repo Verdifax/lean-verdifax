@@ -17,3 +17,4 @@
 
 import Verdifax.Canonical
 import Verdifax.Pipeline
+import Verdifax.Determinism
