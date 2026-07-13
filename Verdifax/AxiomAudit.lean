@@ -14,6 +14,7 @@
 import Verdifax.Canonical
 import Verdifax.Pipeline
 import Verdifax.Determinism
+import Verdifax.R1CS
 
 #print axioms Verdifax.encode_deterministic
 #print axioms Verdifax.encode_injective
@@ -26,3 +27,5 @@ import Verdifax.Determinism
 #print axioms Verdifax.run_halted_sound
 #print axioms Verdifax.run_denied_sound
 #print axioms Verdifax.manifest_binding
+#print axioms Verdifax.R1CS.satSystem_cons
+#print axioms Verdifax.R1CS.satSystem_append
