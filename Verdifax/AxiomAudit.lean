@@ -6,9 +6,10 @@
 -- Classical.choice, Quot.sound); most theorems here use none at all.
 --
 -- The hard gate lives in CI: the build fails if any source file
--- contains `sorry`, `admit`, `native_decide`, or a raw `axiom`
--- declaration. This file makes the trust base VISIBLE; the grep makes
--- violations FATAL.
+-- contains an unproven placeholder, a compiler-trusting decision
+-- procedure, or an ad-hoc axiom declaration (see the audit step in
+-- .github/workflows/build.yml for the exact tokens). This file makes
+-- the trust base VISIBLE; the grep makes violations FATAL.
 
 import Verdifax.Canonical
 import Verdifax.Pipeline
