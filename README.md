@@ -14,27 +14,27 @@ commit. This is the source you can read to check that claim yourself.
 ## What is proven
 
 The theorems (in `Verdifax/`) are kernel-checked statements about
-Verdifax's **canonical preimage encoder** — the null-separated
+Verdifax's **canonical preimage encoder** (the null-separated
 `version ␀ field₁ ␀ field₂ …` construction that every kernel hashes
-with SHA-256 — and about a pure-functional **model of the pipeline**
+with SHA-256) and about a pure-functional **model of the pipeline**
 (policy gate, budget check, manifest assembly).
 
-- **Canonical.lean** — determinism, byte-level spec conformance, order
+- **Canonical.lean**: determinism, byte-level spec conformance, order
   sensitivity, boundary cases, **injectivity** (no two distinct
   null-free field lists share an encoding), **version binding**, and
   the lifting of all guarantees to the hash layer under an explicit
   collision-freedom assumption.
-- **Pipeline.lean** — the `AdmittedInput` record (an exhaustive
+- **Pipeline.lean**: the `AdmittedInput` record (an exhaustive
   enumeration of every fact the sealed manifest depends on), the
   policy gate, the budget check, and manifest assembly.
-- **Determinism.lean** — `pipeline_determinism`, gate soundness
+- **Determinism.lean**: `pipeline_determinism`, gate soundness
   (completed / denied), halt preservation, and **`manifest_binding`**:
   equal sealed manifests force identical admitted inputs *and*
   outcomes, under collision-freedom.
-- **R1CS.lean** — rank-1 constraint-system model with satisfiability
+- **R1CS.lean**: rank-1 constraint-system model with satisfiability
   and gadget-composition lemmas (structural only; no zero-knowledge
   property is claimed).
-- **AxiomAudit.lean** — prints the axiom footprint of every headline
+- **AxiomAudit.lean**: prints the axiom footprint of every headline
   theorem; CI additionally rejects `sorry`, ad-hoc `axiom`
   declarations, and `native_decide`.
 
@@ -45,7 +45,7 @@ the production Go binary. Most depend on **no axioms at all**; the
 rest depend only on Lean's three standard axioms (`propext`,
 `Classical.choice`, `Quot.sound`), printed in every CI build.
 Byte-format fidelity of the model to the production implementation is
-disclosed as roadmap work. **No zero-knowledge property is claimed** —
+disclosed as roadmap work. **No zero-knowledge property is claimed**:
 the ZK prover remains a disclosed scaffold on the
 [Verdifax roadmap](https://verdifax.com/roadmap).
 
