@@ -46,8 +46,8 @@ rest depend only on Lean's three standard axioms (`propext`,
 `Classical.choice`, `Quot.sound`), printed in every CI build.
 Byte-format fidelity of the model to the production implementation is
 disclosed as roadmap work. **No zero-knowledge property is claimed**:
-the ZK prover remains a disclosed scaffold on the
-[Verdifax roadmap](https://verdifax.com/roadmap).
+the ZK prover remains a disclosed scaffold, listed with the other open
+scaffold values at [docs.verdifax.com/concepts/scaffold-gaps](https://docs.verdifax.com/concepts/scaffold-gaps/).
 
 ## Reproduce it yourself
 
