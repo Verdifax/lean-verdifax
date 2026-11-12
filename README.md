@@ -5,7 +5,9 @@ Machine-checked formal-verification development for
 system for high-stakes AI decisions.
 
 This repository contains the Lean 4 proofs that back the
-`formal_verification` record sealed into every Verdifax audit bundle.
+`formal_verification` record in Verdifax audit bundles, which the
+complete-record anchor covers on successful runs sealed from run 238 on;
+on earlier records no hash covers it.
 When a bundle is verified with the open-source
 [`verdifax-verify`](https://github.com/Verdifax/verdifax-verify) CLI,
 the `Formal verify: bound` line cites this repository and a pinned
@@ -24,9 +26,11 @@ with SHA-256) and about a pure-functional **model of the pipeline**
   null-free field lists share an encoding), **version binding**, and
   the lifting of all guarantees to the hash layer under an explicit
   collision-freedom assumption.
-- **Pipeline.lean**: the `AdmittedInput` record (an exhaustive
-  enumeration of every fact the sealed manifest depends on), the
-  policy gate, the budget check, and manifest assembly.
+- **Pipeline.lean**: the `AdmittedInput` record (an enumeration of
+  every fact the Lean model's manifest depends on; the production
+  manifest also depends on values the model leaves out, such as the
+  admission clock, the program, the route and the registry record
+  hash), the policy gate, the budget check, and manifest assembly.
 - **Determinism.lean**: `pipeline_determinism`, gate soundness
   (completed / denied), halt preservation, and **`manifest_binding`**:
   equal sealed manifests force identical admitted inputs *and*
